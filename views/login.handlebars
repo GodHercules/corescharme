@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body class="text-center">
+    <br><br>
+    <form class="form-signin" action="/login" method="POST">
+        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+        <label for="inputUsername" class="sr-only">Usuario</label>
+        <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Usuario" required autofocus>
+        <br>
+        <label for="inputPassword" class="sr-only">Senha</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Senha" required>
+        <br>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> Relembre-me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+        <a href="/cadastro-de-usuario" class="btn btn-lg btn-success btn-block mt-3">Cadastre-se</a>
+        <p class="mt-5 mb-3 text-muted">&copy; Cores&Charme-2024</p>
+    </form>
+    <br><br>
+</body>
+</html>

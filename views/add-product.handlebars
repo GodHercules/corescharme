@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produto</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4 mb-4">Cadastro de Produto</h1>
+        <form action="/cadastro-de-produtos" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Nome:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Descrição:</label>
+                <textarea class="form-control" id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Preço:</label>
+                <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Imagem:</label>
+                <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
+        </form>
+        
+        <h2 class="mt-5 mb-3">Produtos Cadastrados</h2>
+        <div class="row">
+            {{#each products}}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{imageUrl}}" class="card-img-top" alt="{{this.name}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.name}}</h5>
+                        <p class="card-text">{{this.description}}</p>
+                        <p class="card-text">Preço: R$ {{this.price}}</p>
+                        <a href="/editar-produto/{{this.id}}" class="btn btn-warning">Editar</a>
+                        <form action="/deletar-produto/{{this.id}}" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-danger">Deletar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+        <div class="container">
+            <div class="card">
+                <h1 class="text-center">Finalizar Compra</h1>
+                <div id="cart-details" class="cart-details mt-4">
+                
+                </div>
+                <div class="mt-4">
+                    <form id="shipping-form">
+                        <div class="form-group">
+                            <label for="cep">CEP:</label>
+                            <input type="text" id="cep" name="cep" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Calcular Frete</button>
+                    </form>
+                    <div id="shipping-info" class="shipping-info mt-3"></div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="subtotal-info">
+                        <p>Subtotal: R$ <span id="subtotal">0.00</span></p>
+                    </div>
+                    <div class="shipping-total-info">
+                        <p>Frete: R$ <span id="shipping">0.00</span></p>
+                    </div>
+                    <div class="total-info">
+                        <p>Total: R$ <span id="total">0.00</span></p>
+                    </div>
+                </div>
+
+                <div class="mt-4 confirmation-button">
+                    <button class="btn btn-success btn-lg" id="confirm-purchase">Confirmar Compra</button>
+                </div>
+            </div>
+        </div>
+    <br><br><br><br>
+    <!-- Inclua o jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/js/finalizar.js"></script>
+    <script>
+        $(document).ready(function() {
+            
+            var product = JSON.parse(sessionStorage.getItem('checkoutProduct'));
+            var cartItems = JSON.parse(sessionStorage.getItem('checkoutCart'));
+
+            var subtotal = 0;
+            var shippingCost = 0;
+
+            if (product) {
+                displayProductDetails(product);
+            } else if (cartItems && cartItems.length > 0) {
+                displayCartDetails(cartItems);
+            }
+
+            $('#confirm-purchase').click(function() {
+                confirmPurchase();
+            });
+
+            $('#shipping-form').submit(function(event) {
+                event.preventDefault();
+                var cep = $('#cep').val();
+                calculateShipping(cep);
+            });
+        });
+
+        // Função para exibir os detalhes do produto na página
+        function displayProductDetails(product) {
+            $('#product-details').html(
+                '<img src="' + product.imageUrl + '" alt="' + product.name + '" class="product-image">' +
+                '<div class="product-info">' +
+                    '<h5>' + product.name + '</h5>' +
+                    '<p>Preço Unitário: R$ <span class="unit-price">' + product.price + '</span></p>' +
+                    '<p>Quantidade: ' + product.quantity + '</p>' +
+                '</div>'
+            );
+            subtotal += product.price * product.quantity;
+            $('#subtotal').text(subtotal.toFixed(2));
+        }
+
+        // Função para exibir os detalhes dos itens do carrinho na página
+        function displayCartDetails(cartItems) {
+            cartItems.forEach(function(item) {
+                $('#cart-details').append(
+                    '<div class="product-info">' +
+                        '<img src="' + item.imageUrl + '" alt="' + item.name + '" class="product-image">' +
+                        '<h5>' + item.name + '</h5>' +
+                        '<p>Preço Unitário: R$ <span class="unit-price">' + item.price + '</span></p>' +
+                        '<p>Quantidade: ' + item.quantity + '</p>' +
+                    '</div>'
+                );
+                subtotal += item.price * item.quantity;
+            });
+            $('#subtotal').text(subtotal.toFixed(2));
+        }
+
+        // Função para confirmar a compra
+        function confirmPurchase() {
+            // Lógica para confirmar a compra (ex.: enviar os dados para o servidor)
+            alert('Compra confirmada!');
+            sessionStorage.removeItem('checkoutProduct'); // Limpar o item do sessionStorage após confirmar a compra
+            sessionStorage.removeItem('checkoutCart'); // Limpar o item do sessionStorage após confirmar a compra
+            window.location.href = '/obrigado'; // Redirecionar para a rota "/obrigado"
+        }
+
+        // Função para calcular o frete com base no CEP
+        function calculateShipping(cep) {
+            $.ajax({
+                url: '/calcular-frete',
+                type: 'POST',
+                data: { cep: cep },
+                success: function(response) {
+                    // Exiba as informações do frete na página
+                    shippingCost = parseFloat(response.valor);
+                    $('#shipping').text(shippingCost.toFixed(2));
+                    updateTotal();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro ao calcular o frete:', error);
+                }
+            });
+        }
+
+        // Função para atualizar o total
+        function updateTotal() {
+            var subtotal = parseFloat($('#subtotal').text());
+            var shipping = parseFloat($('#shipping').text());
+
+            var total = subtotal + shipping;
+
+            $('#total').text(total.toFixed(2));
+        }
+    </script>
+</body>
+</html>

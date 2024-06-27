@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Cadastro de Usuário</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body class="text-center">
+    <h1 class="h3 mb-3 font-weight-normal">Cadastre-se</h1>
+    {{#if error}}
+        <p style="color: red;">{{error}}</p>
+    {{/if}}
+    <form class="form-signup" action="/cadastro-de-usuario" method="POST">
+        <div>
+            <label for="username" class="sr-only">Usuario</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
+        </div>
+        <div>
+            <label for="password" class="sr-only">Senha</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
+        <a href="/login" class="btn btn-lg btn-secondary btn-block mt-3">Voltar ao Login</a>
+        <p class="mt-5 mb-3 text-muted">&copy; Cores&Charme-2024</p>
+    </form>
+</body>
+</html>

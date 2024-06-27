@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Semideus">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Cadastro</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Cadastro</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="registerEmail">Email:</label>
+                <input type="email" class="form-control" id="registerEmail" name="email" required>
+                <label for="registerEmail">Senha:</label>
+                <input type="senha" class="form-control" id="senha" name="senha" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#registerForm').submit(function(event) {
+                event.preventDefault();
+                var email = $('#registerEmail').val();
+
+                // Enviar uma solicitação AJAX para o servidor para o cadastro
+                $.ajax({
+                    type: 'POST',
+                    url: '/register',
+                    data: { email: email },
+                    success: function(response) {
+                        alert('Cadastro realizado com sucesso! Verifique seu email para confirmação.');
+                        window.location.href = '/';
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Erro no cadastro: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
